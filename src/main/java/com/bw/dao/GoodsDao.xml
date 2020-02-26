@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bw.dao.GoodsDao">
+	<select id="getlist" resultType="Goods">
+		SELECT * FROM (goods LEFT JOIN goods_type ON goods.tid=goods_type.tid) 
+LEFT JOIN `goods_brand` on goods.bid=`goods_brand`.bid
+<where>
+	<if test="tname!='' and tname!=null">
+		and tname like concat('%',#{tname},'%')
+	</if>
+	<if test="bname!='' and bname!=null">
+		and bname like concat('%',#{bname},'%')
+	</if>
+	<if test="p1!=0 and p1!=null">
+		and price &gt;=#{p1}
+	</if>
+	<if test="p2!=0 and p2!=null">
+		and price &lt;=#{p2}
+	</if>
+</where>
+	</select>
+	
+	<select id="getpp" resultType="GoodsType">
+		select * from goods_type
+	</select>
+	
+	<select id="getzl" resultType="GoodsBrand">
+		select * from goods_brand
+	</select>
+	
+	<insert id="addGoods">
+		insert into goods values(null,#{name},#{ename},#{cc},#{price},#{num},#{bq},#{pic},#{tid},#{bid})
+	</insert>
+</mapper>
